@@ -9,10 +9,18 @@ var eyeCenter = [];
 var fDS = [];
 var zoom = 2;
 
+var button;
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
   ellipseMode(CENTER);
   angleMode(DEGREES);
+
+  button = createButton('Start');
+  button.position(videoSelect.x + videoSelect.width, 65);
+  button.mousePressed(start);
+  button.mousePressed(initExample);
+
 }
 
 function draw() {

@@ -1,4 +1,5 @@
 function initExample() {
+
   var webcam		= document.getElementById("_webcam");		// our webcam video
   var imageData	= document.getElementById("_imageData");	// image data for BRFv4
   var brfManager	= null;
@@ -20,7 +21,9 @@ function initExample() {
       }
       onStreamDimensionsAvailable();
     }
-    window.navigator.mediaDevices.getUserMedia({video: {width: 640, height: 480, frameRate: 30}})
+
+    // {video: {deviceId: videoSource, width: 640, height: 480, frameRate: 30}}
+    window.navigator.mediaDevices.getUserMedia(constraints)
       .then(onStreamFetched).catch(function () { alert("No camera available."); });
   }
   function waitForSDK() {
@@ -65,4 +68,4 @@ function initExample() {
     requestAnimationFrame(trackFaces);
   }
 }
-window.onload = initExample;
+// window.onload = initExample;

@@ -1,12 +1,10 @@
-var webcam		= document.getElementById("_webcam");		// our webcam video
-var imageData	= document.getElementById("_imageData");	// image data for BRFv4
-var brfManager	= null;
-var resolution	= null;
-var brfv4		= null;
-
-
 function initExample() {
 
+  var webcam		= document.getElementById("_webcam");		// our webcam video
+  var imageData	= document.getElementById("_imageData");	// image data for BRFv4
+  var brfManager	= null;
+  var resolution	= null;
+  var brfv4		= null;
   startCamera();
   function startCamera() {
     // Start video playback once the camera was fetched.
@@ -24,11 +22,8 @@ function initExample() {
       onStreamDimensionsAvailable();
     }
 
-
     // {video: {deviceId: videoSource, width: 640, height: 480, frameRate: 30}}
-    window.navigator.mediaDevices.getUserMedia(
-      {video: {width: 640, height: 480, frameRate: 30}}
-    )
+    window.navigator.mediaDevices.getUserMedia(constraints)
       .then(onStreamFetched).catch(function () { alert("No camera available."); });
   }
   function waitForSDK() {
@@ -49,7 +44,7 @@ function initExample() {
     resolution	= new brfv4.Rectangle(0, 0, imageData.width, imageData.height);
     brfManager	= new brfv4.BRFManager();
     brfManager.init(resolution, resolution, "com.tastenkunst.brfv4.js.examples.minimal.webcam");
-    brfManager.setNumFacesToTrack(4);
+    // brfManager.setNumFacesToTrack(2);
     trackFaces();
   }
   function trackFaces() {
@@ -58,21 +53,21 @@ function initExample() {
     imageDataCtx.drawImage(webcam, 0, 0, resolution.width, resolution.height);
     imageDataCtx.setTransform( 1.0, 0, 0, 1, 0, 0); // unmirrored for draw of results
     brfManager.update(imageDataCtx.getImageData(0, 0, resolution.width, resolution.height).data);
-    faces = brfManager.getFaces();
-
+    var faces = brfManager.getFaces();
+    console.log(faces.length);
     for(var i = 0; i < faces.length; i++) {
       var face = faces[i];
-      // if(		face.state === brfv4.BRFState.FACE_TRACKING_START ||
-      //     face.state === brfv4.BRFState.FACE_TRACKING) {
-      //   imageDataCtx.strokeStyle="#00a0ff";
-      //   for(var k = 0; k < face.vertices.length; k += 2) {
-      //     imageDataCtx.beginPath();
-      //     imageDataCtx.arc(face.vertices[k], face.vertices[k + 1], 2, 0, 2 * Math.PI);
-      //     imageDataCtx.stroke();
-      //   }
-      // }
+      if(		face.state === brfv4.BRFState.FACE_TRACKING_START ||
+          face.state === brfv4.BRFState.FACE_TRACKING) {
+        imageDataCtx.strokeStyle="#00a0ff";
+        for(var k = 0; k < face.vertices.length; k += 2) {
+          imageDataCtx.beginPath();
+          imageDataCtx.arc(face.vertices[k], face.vertices[k + 1], 2, 0, 2 * Math.PI);
+          imageDataCtx.stroke();
+        }
+      }
     }
     requestAnimationFrame(trackFaces);
   }
 }
-window.onload = initExample;
+// window.onload = initExample;

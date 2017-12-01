@@ -62,15 +62,15 @@ function initExample() {
 
     for(var i = 0; i < faces.length; i++) {
       var face = faces[i];
-      if(		face.state === brfv4.BRFState.FACE_TRACKING_START ||
-          face.state === brfv4.BRFState.FACE_TRACKING) {
-        imageDataCtx.strokeStyle="#00a0ff";
-        for(var k = 0; k < face.vertices.length; k += 2) {
-          imageDataCtx.beginPath();
-          imageDataCtx.arc(face.vertices[k], face.vertices[k + 1], 2, 0, 2 * Math.PI);
-          imageDataCtx.stroke();
-        }
-      }
+      // if(		face.state === brfv4.BRFState.FACE_TRACKING_START ||
+      //     face.state === brfv4.BRFState.FACE_TRACKING) {
+      //   imageDataCtx.strokeStyle="#00a0ff";
+      //   for(var k = 0; k < face.vertices.length; k += 2) {
+      //     imageDataCtx.beginPath();
+      //     imageDataCtx.arc(face.vertices[k], face.vertices[k + 1], 2, 0, 2 * Math.PI);
+      //     imageDataCtx.stroke();
+      //   }
+      // }
     }
     requestAnimationFrame(trackFaces);
   }

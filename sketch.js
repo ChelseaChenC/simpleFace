@@ -6,6 +6,8 @@ var faces = [];
 // var center = [];
 // var eyeCenter = [];
 
+var numberOfFaces = 0;
+
 var zoom = 2;
 
 // var button;
@@ -23,25 +25,25 @@ function setup() {
 }
 
 function draw() {
+  numberOfFaces = 0;
   background(255);
   // if (faces.length >= 1) {
-  console.log(faces.length);
 
     for (var i = 0; i < faces.length; i++) {
-      // console.log("倒着了");
       DrawFace(faces[i]);
 
     // }
   }
+  console.log(numberOfFaces + "/" + faces.length);
 }
 
 function DrawFace(face) {
-  console.log("倒着了");
-
 
   if (face.state === brfv4.BRFState.FACE_TRACKING_START ||
       face.state === brfv4.BRFState.FACE_TRACKING) {
     // fDS : face dots shifted
+    numberOfFaces +=1;
+
     let fDS = [];
     let center = [
       (face.vertices[0 * 2] + (face.vertices[16 * 2] - face.vertices[0 * 2]) / 2) * 2,

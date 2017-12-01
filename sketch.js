@@ -1,68 +1,83 @@
-var face;
-var leftEye = [];
-var rightEye = [];
-var head = [];
-var mouth = [];
-var center = [];
-var eyeCenter = [];
-// fDS : face dots shifted
-var fDS = [];
+var faces = [];
+// var leftEye = [];
+// var rightEye = [];
+// var head = [];
+// var mouth = [];
+// var center = [];
+// var eyeCenter = [];
+
 var zoom = 2;
 
-var button;
+// var button;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
   ellipseMode(CENTER);
   angleMode(DEGREES);
 
-  button = createButton('Start');
-  button.position(videoSelect.x + videoSelect.width, 65);
-  button.mousePressed(start);
-  button.mousePressed(initExample);
+  // button = createButton('Start');
+  // button.position(videoSelect.x + videoSelect.width, 65);
+  // button.mousePressed(start);
+  // button.mousePressed(exampleCode);
 
 }
 
 function draw() {
   background(255);
+  // if (faces.length >= 1) {
+  console.log(faces.length);
 
-  if (face != undefined) {
+    for (var i = 0; i < faces.length; i++) {
+      // console.log("倒着了");
+      DrawFace(faces[i]);
 
-    center = [
-      (face.vertices[0 * 2] + (face.vertices[16 * 2] - face.vertices[0 * 2]) / 2) *2,
-      (face.vertices[1 * 2 + 1] + (face.vertices[15 * 2 + 1] - face.vertices[1 * 2 + 1]) / 2)*2,
+    // }
+  }
+}
+
+function DrawFace(face) {
+  console.log("倒着了");
+
+
+  if (face.state === brfv4.BRFState.FACE_TRACKING_START ||
+      face.state === brfv4.BRFState.FACE_TRACKING) {
+    // fDS : face dots shifted
+    let fDS = [];
+    let center = [
+      (face.vertices[0 * 2] + (face.vertices[16 * 2] - face.vertices[0 * 2]) / 2) * 2,
+      (face.vertices[1 * 2 + 1] + (face.vertices[15 * 2 + 1] - face.vertices[1 * 2 + 1]) / 2) * 2,
     ];
 
     for (var i = 0; i < face.vertices.length; i += 2) {
-      fDS[i / 2] = [face.vertices[i]*2 - center[0], face.vertices[i + 1]*2 - center[1]];
+      fDS[i / 2] = [face.vertices[i] * 2 - center[0], face.vertices[i + 1] * 2 - center[1]];
     }
 
-    head = [
+    let head = [
       0, 0,
       fDS[16][0] - fDS[0][0],
       (fDS[8][1] - fDS[29][1]) * 2
     ];
 
-    leftEye = [
+    let leftEye = [
       fDS[41][0] + (fDS[40][0] - fDS[41][0]),
       fDS[41][1],
       fDS[40][0] - fDS[41][0],
       fDS[40][1] - fDS[38][1],
     ]
-    rightEye = [
+    let rightEye = [
       fDS[47][0] + (fDS[46][0] - fDS[47][0]) / 2,
       fDS[46][1],
       fDS[46][0] - fDS[47][0],
       fDS[47][1] - fDS[43][1],
     ]
-    mouth = [
+    let mouth = [
       fDS[60][0] + (fDS[64][0] - fDS[60][0]) / 2,
       fDS[62][1],
       fDS[64][0] - fDS[60][0],
       fDS[66][1] - fDS[62][1],
     ]
 
-    var a = atan2(fDS[16][0] - fDS[0][0], fDS[16][1] - fDS[0][1]);
+    let a = atan2(fDS[16][0] - fDS[0][0], fDS[16][1] - fDS[0][1]);
 
     push();
     translate(center[0], center[1]);
@@ -71,18 +86,18 @@ function draw() {
     stroke(0);
     strokeWeight(4);
     ellipse(head[0], head[1], head[2] * 1.2, head[3]);
-		bezier(
-			fDS[48][0],fDS[48][1]*0.95,
-			fDS[67][0],fDS[67][1],
-			fDS[65][0],fDS[65][1],
-			fDS[54][0],fDS[54][1]*0.95,
-		);
-		bezier(
-			fDS[48][0],fDS[48][1]*0.95,
-			fDS[61][0],fDS[61][1],
-			fDS[63][0],fDS[63][1],
-			fDS[54][0],fDS[54][1]*0.95,
-		);
+    bezier(
+      fDS[48][0], fDS[48][1] * 0.95,
+      fDS[67][0], fDS[67][1],
+      fDS[65][0], fDS[65][1],
+      fDS[54][0], fDS[54][1] * 0.95,
+    );
+    bezier(
+      fDS[48][0], fDS[48][1] * 0.95,
+      fDS[61][0], fDS[61][1],
+      fDS[63][0], fDS[63][1],
+      fDS[54][0], fDS[54][1] * 0.95,
+    );
     pop();
 
     push();
@@ -91,18 +106,18 @@ function draw() {
     // console.log(-a, -a + 90, (-a + 90) / 2);
     fill(0);
     ellipse(leftEye[0], leftEye[1], leftEye[2] * 1.2, leftEye[3] * 1.2);
-		// bezier(
-		// 	fDS[37][0],fDS[37][1],
-		// 	fDS[38][0],fDS[38][1],
-		// 	fDS[40][0],fDS[40][1],
-		// 	fDS[41][0],fDS[41][1],
-		// );
-		// bezier(
-		// 	fDS[38][0],fDS[38][1],
-		// 	fDS[37][0],fDS[37][1],
-		// 	fDS[41][0],fDS[41][1],
-		// 	fDS[40][0],fDS[40][1],
-		// );
+    // bezier(
+    // 	fDS[37][0],fDS[37][1],
+    // 	fDS[38][0],fDS[38][1],
+    // 	fDS[40][0],fDS[40][1],
+    // 	fDS[41][0],fDS[41][1],
+    // );
+    // bezier(
+    // 	fDS[38][0],fDS[38][1],
+    // 	fDS[37][0],fDS[37][1],
+    // 	fDS[41][0],fDS[41][1],
+    // 	fDS[40][0],fDS[40][1],
+    // );
     ellipse(rightEye[0], rightEye[1], rightEye[2] * 1.2, rightEye[3] * 1.2);
 
     pop();
@@ -112,10 +127,10 @@ function draw() {
     //   let y = fDS[k][1];
     //   noStroke();
     //   fill(200);
-    // 	push();
-    // 	translate(center[0],center[1]);
+    //   push();
+    //   translate(center[0], center[1]);
     //   ellipse(x, y, 2, 2);
-    // 	pop();
+    //   pop();
     // }
   }
 }

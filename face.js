@@ -4,6 +4,7 @@ var brfManager	= null;
 var resolution	= null;
 var brfv4		= null;
 
+var constraints = {video: {width: 640, height: 480, frameRate: 30}}
 
 function initExample() {
 
@@ -26,10 +27,7 @@ function initExample() {
 
 
     // {video: {deviceId: videoSource, width: 640, height: 480, frameRate: 30}}
-    window.navigator.mediaDevices.getUserMedia(
-      {video: {width: 640, height: 480, frameRate: 30}}
-    )
-      .then(onStreamFetched).catch(function () { alert("No camera available."); });
+    window.navigator.mediaDevices.getUserMedia(constraints).then(onStreamFetched).catch(function () { alert("No camera available."); });
   }
   function waitForSDK() {
     if(brfv4 === null) {
